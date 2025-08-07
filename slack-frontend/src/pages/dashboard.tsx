@@ -10,33 +10,7 @@ import {
 } from "lucide-react";
 
 export default function Dashboard() {
-  const stats = [
-    {
-      title: "Total Scheduled",
-      value: 24,
-      icon: MessageSquare,
-      trend: { value: 12, isPositive: true }
-    },
-    {
-      title: "Messages Sent",
-      value: 156,
-      icon: Send,
-      trend: { value: 8, isPositive: true }
-    },
-    {
-      title: "Cancelled",
-      value: 3,
-      icon: X,
-      trend: { value: 2, isPositive: false }
-    },
-    {
-      title: "Upcoming 24h",
-      value: 7,
-      icon: Clock,
-      trend: { value: 3, isPositive: true }
-    }
-  ];
-
+  
   return (
     <div className="min-h-screen bg-background">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -46,7 +20,7 @@ export default function Dashboard() {
             Welcome to Slack Connect
           </h1>
           <p className="text-muted-foreground text-lg">
-            Schedule smarter, not harder. Manage your Slack messages with ease.
+            Send and schedule Slack messages from one dashboard.
           </p>
         </div>
 
@@ -55,19 +29,7 @@ export default function Dashboard() {
           <ConnectionStatus />
         </div>
 
-        {/* Stats Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-          {stats.map((stat, index) => (
-            <StatCard
-              key={stat.title}
-              title={stat.title}
-              value={stat.value}
-              icon={stat.icon}
-              trend={stat.trend}
-              className={`animate-in slide-in-from-bottom duration-500 [animation-delay:${index * 100}ms]`}
-            />
-          ))}
-        </div>
+      
 
         {/* Quick Actions */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">

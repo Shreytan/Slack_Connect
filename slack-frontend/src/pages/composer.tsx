@@ -10,6 +10,13 @@ import { Input } from "@/components/ui/input";
 import { Calendar, CalendarIcon, MessageSquare, Send, Clock } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
+interface Channel {
+  id: string;
+  name: string;
+  members: number;
+}
+
+
 export default function Composer() {
   const [message, setMessage] = useState("");
   const [selectedChannel, setSelectedChannel] = useState("");
@@ -19,13 +26,9 @@ export default function Composer() {
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
 
-  const channels = [
-    { id: "general", name: "#general", members: 24 },
-    { id: "dev-team", name: "#dev-team", members: 8 },
-    { id: "marketing", name: "#marketing", members: 12 },
-    { id: "product", name: "#product", members: 6 },
-    { id: "random", name: "#random", members: 18 }
-  ];
+// TODO: Fetch channels from backend
+const [channels, setChannels] = useState<Channel[]>([]);
+
 
   const handleSendMessage = async () => {
     if (!message.trim() || !selectedChannel) {
@@ -49,7 +52,8 @@ export default function Composer() {
     setIsLoading(true);
     
     // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 1500));
+    // TODO: call POST /api/messages/send or /api/messages/schedule
+
     
     setIsLoading(false);
 

@@ -39,48 +39,9 @@ export default function Scheduled() {
   const [sortBy, setSortBy] = useState<string>("scheduledTime");
   const { toast } = useToast();
 
-  const [messages] = useState<ScheduledMessage[]>([
-    {
-      id: "1",
-      channel: "#dev-team",
-      message: "Daily standup reminder: Don't forget our 9 AM sync! 🚀",
-      scheduledTime: "2024-01-15T09:00:00",
-      status: "pending",
-      createdAt: "2024-01-14T15:30:00"
-    },
-    {
-      id: "2", 
-      channel: "#general",
-      message: "Happy Friday everyone! 🎉 Remember to submit your weekly reports.",
-      scheduledTime: "2024-01-12T17:00:00",
-      status: "sent",
-      createdAt: "2024-01-12T10:15:00"
-    },
-    {
-      id: "3",
-      channel: "#marketing",
-      message: "Campaign launch update meeting moved to 3 PM conference room A.",
-      scheduledTime: "2024-01-13T14:00:00",
-      status: "cancelled",
-      createdAt: "2024-01-13T09:45:00"
-    },
-    {
-      id: "4",
-      channel: "#product",
-      message: "Sprint review scheduled for Monday 10 AM. Please prepare your demos!",
-      scheduledTime: "2024-01-16T10:00:00",
-      status: "pending",
-      createdAt: "2024-01-14T16:20:00"
-    },
-    {
-      id: "5",
-      channel: "#random",
-      message: "Coffee machine maintenance scheduled for this afternoon.",
-      scheduledTime: "2024-01-11T13:00:00",
-      status: "failed",
-      createdAt: "2024-01-11T08:30:00"
-    }
-  ]);
+  // TODO: Fetch scheduled messages via API
+
+  const [messages, setMessages] = useState<ScheduledMessage[]>([]);
 
   const handleReschedule = (messageId: string) => {
     toast({
@@ -134,7 +95,7 @@ export default function Scheduled() {
             Scheduled Messages
           </h1>
           <p className="text-muted-foreground text-lg">
-            Manage your quantum-scheduled Slack messages across the multiverse.
+             View and manage your scheduled Slack messages.
           </p>
         </div>
 
@@ -208,7 +169,7 @@ export default function Scheduled() {
               <div className="p-2 rounded-lg bg-gradient-cyber/10">
                 <Filter className="h-5 w-5 text-cyber" />
               </div>
-              Quantum Filters
+               Filters
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -253,7 +214,7 @@ export default function Scheduled() {
                 <div className="p-2 rounded-lg bg-gradient-fusion/10">
                   <Calendar className="h-5 w-5 text-primary" />
                 </div>
-                <span className="gradient-text">Message Timeline</span>
+                <span className="gradient-text">Scheduled Messages</span>
               </div>
               <Button variant="outline" size="sm">
                 <ArrowUpDown className="h-4 w-4" />

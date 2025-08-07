@@ -11,9 +11,6 @@ const buttonVariants = cva(
       variant: {
         default: "bg-gradient-primary text-primary-foreground shadow-lg hover:shadow-glow hover:scale-[1.02] active:scale-[0.98] transition-all duration-300",
         secondary: "bg-gradient-secondary text-secondary-foreground shadow-lg hover:shadow-glow hover:scale-[1.02] active:scale-[0.98] transition-all duration-300",
-        pink: "bg-gradient-pink text-pink-foreground shadow-lg hover:shadow-pink hover:scale-[1.02] active:scale-[0.98] transition-all duration-300",
-        cyber: "bg-gradient-cyber text-cyber-foreground shadow-lg hover:shadow-cyber hover:scale-[1.02] active:scale-[0.98] transition-all duration-300",
-        fusion: "bg-gradient-fusion text-primary-foreground shadow-lg hover:shadow-neon hover:scale-[1.02] active:scale-[0.98] transition-all duration-300",
         outline: "border border-border bg-card/50 text-foreground backdrop-blur-sm hover:bg-accent/50 hover:text-accent-foreground hover:border-accent/50 transition-all duration-300",
         ghost: "text-foreground hover:bg-accent/20 hover:text-accent-foreground transition-all duration-300",
         destructive: "bg-destructive text-destructive-foreground shadow-lg hover:opacity-90 hover:scale-[1.02] active:scale-[0.98] transition-all duration-300",

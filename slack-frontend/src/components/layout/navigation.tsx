@@ -13,10 +13,10 @@ import {
 } from "lucide-react";
 
 const navigation = [
-  { name: "Neural Hub", href: "/", icon: Home },
-  { name: "Composer", href: "/composer", icon: MessageSquare },
-  { name: "Timeline", href: "/scheduled", icon: Calendar },
-  { name: "Config", href: "/settings", icon: Settings },
+  { name: "Dashboard", href: "/", icon: Home },
+  { name: "Compose", href: "/composer", icon: MessageSquare },
+  { name: "Scheduled", href: "/scheduled", icon: Calendar },
+  { name: "Settings", href: "/settings", icon: Settings },
 ];
 
 export function Navigation() {
@@ -35,7 +35,6 @@ export function Navigation() {
             </div>
             <div>
               <h1 className="text-lg font-bold gradient-text">Slack Connect</h1>
-              <p className="text-xs text-muted-foreground">Neural Message Matrix</p>
             </div>
           </div>
 

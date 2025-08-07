@@ -32,7 +32,6 @@ import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
 
 export default function SettingsPage() {
-  const [notifications, setNotifications] = useState(true);
   const [autoSchedule, setAutoSchedule] = useState(false);
   const [darkMode, setDarkMode] = useState(true);
   const [soundEnabled, setSoundEnabled] = useState(true);
@@ -44,27 +43,27 @@ export default function SettingsPage() {
 
   const handleSave = () => {
     toast({
-      title: "⚡ Settings Updated",
-      description: "Your neural configurations have been synchronized across all dimensions.",
+      title: "Settings Saved",
+      description: "Your preferences have been updated successfully.",
     });
   };
 
   const settingsSections = [
     {
       id: "profile",
-      title: "Neural Profile",
+      title: "Profile",
       icon: User,
       gradient: "gradient-primary"
     },
     {
       id: "notifications", 
-      title: "Quantum Notifications",
+      title: "Notifications",
       icon: Bell,
       gradient: "gradient-pink"
     },
     {
       id: "automation",
-      title: "AI Automation",
+      title: "Automation",
       icon: Bot,
       gradient: "gradient-cyber"
     },
@@ -76,7 +75,7 @@ export default function SettingsPage() {
     },
     {
       id: "security",
-      title: "Cyber Security",
+      title: "Security",
       icon: Shield,
       gradient: "gradient-secondary"
     }
@@ -92,10 +91,10 @@ export default function SettingsPage() {
         {/* Header */}
         <div className="mb-8 animate-slide-in-up">
           <h1 className="text-3xl font-bold gradient-text mb-2">
-            Neural Control Center
+            Settings
           </h1>
           <p className="text-muted-foreground text-lg">
-            Configure your quantum workspace and neural link preferences.
+            Configure your account and scheduling preferences.
           </p>
         </div>
 
@@ -105,7 +104,7 @@ export default function SettingsPage() {
             <Card className="neumorphic-card border-0 sticky top-24">
               <CardHeader>
                 <CardTitle className="flex items-center gap-3 text-lg">
-                  <div className="p-2 rounded-lg bg-gradient-fusion/10">
+                  <div className="p-2 rounded-lg bg-gradient-primary/10">
                     <Settings className="h-5 w-5 text-primary" />
                   </div>
                   <span className="gradient-text">Modules</span>
@@ -150,62 +149,37 @@ export default function SettingsPage() {
                     <div className="p-2 rounded-lg bg-gradient-primary/10">
                       <User className="h-5 w-5 text-primary" />
                     </div>
-                    Neural Profile Configuration
+                    Profile Settings
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-6">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div className="space-y-2">
-                      <Label>Neural ID</Label>
+                      <Label>User ID</Label>
                       <Input 
-                        placeholder="Enter your neural identifier"
+                        placeholder="Enter your user ID"
                         className="neumorphic-card border-0 bg-muted/20"
                       />
                     </div>
                     <div className="space-y-2">
-                      <Label>Workspace Alias</Label>
+                      <Label>Workspace Name</Label>
                       <Input 
-                        placeholder="CyberSpace Labs"
+                        placeholder="Enter your workspace name"
                         className="neumorphic-card border-0 bg-muted/20"
                       />
                     </div>
                   </div>
                   
                   <div className="space-y-2">
-                    <Label>Bio-Neural Status</Label>
+                    <Label>Bio</Label>
                     <Textarea 
-                      placeholder="Connected to the matrix, scheduling quantum messages across parallel dimensions..."
+                      placeholder="Tell us about yourself..."
                       className="neumorphic-card border-0 bg-muted/20 min-h-[100px]"
                     />
-                  </div>
-
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <div className="neumorphic-card rounded-xl p-4">
-                      <div className="text-center">
-                        <Zap className="h-8 w-8 text-primary mx-auto mb-2" />
-                        <div className="font-bold text-lg gradient-text">2.4K</div>
-                        <div className="text-xs text-muted-foreground">Messages Sent</div>
-                      </div>
-                    </div>
-                    <div className="neumorphic-card rounded-xl p-4">
-                      <div className="text-center">
-                        <Cpu className="h-8 w-8 text-pink mx-auto mb-2" />
-                        <div className="font-bold text-lg text-pink">99.8%</div>
-                        <div className="text-xs text-muted-foreground">Neural Sync</div>
-                      </div>
-                    </div>
-                    <div className="neumorphic-card rounded-xl p-4">
-                      <div className="text-center">
-                        <Sparkles className="h-8 w-8 text-cyber mx-auto mb-2" />
-                        <div className="font-bold text-lg text-cyber">Elite</div>
-                        <div className="text-xs text-muted-foreground">Rank Status</div>
-                      </div>
-                    </div>
                   </div>
                 </CardContent>
               </Card>
             )}
-
             {/* Notifications */}
             {activeSection === "notifications" && (
               <Card className="neumorphic-card border-0 animate-slide-in-up">
@@ -214,65 +188,19 @@ export default function SettingsPage() {
                     <div className="p-2 rounded-lg bg-gradient-pink/10">
                       <Bell className="h-5 w-5 text-pink" />
                     </div>
-                    Quantum Notification Matrix
+                    Notification Settings
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-6">
-                  <div className="space-y-4">
-                    <div className="flex items-center justify-between p-4 neumorphic-card rounded-xl">
-                      <div className="flex items-center gap-3">
-                        <Bell className="h-5 w-5 text-pink" />
-                        <div>
-                          <div className="font-medium">Push Notifications</div>
-                          <div className="text-sm text-muted-foreground">Receive real-time quantum alerts</div>
-                        </div>
-                      </div>
-                      <Switch checked={notifications} onCheckedChange={setNotifications} />
+                  <div className="flex items-center justify-between p-4 neumorphic-card rounded-xl">
+                    <div className="flex items-center gap-3">
+                      <div className="font-medium">Enable Notifications</div>
                     </div>
-
-                    <div className="flex items-center justify-between p-4 neumorphic-card rounded-xl">
-                      <div className="flex items-center gap-3">
-                        {soundEnabled ? <Volume2 className="h-5 w-5 text-success" /> : <VolumeX className="h-5 w-5 text-muted-foreground" />}
-                        <div>
-                          <div className="font-medium">Sound Effects</div>
-                          <div className="text-sm text-muted-foreground">Neural feedback audio cues</div>
-                        </div>
-                      </div>
-                      <Switch checked={soundEnabled} onCheckedChange={setSoundEnabled} />
-                    </div>
-
-                    <div className="flex items-center justify-between p-4 neumorphic-card rounded-xl">
-                      <div className="flex items-center gap-3">
-                        <Database className="h-5 w-5 text-cyber" />
-                        <div>
-                          <div className="font-medium">Quantum Sync</div>
-                          <div className="text-sm text-muted-foreground">Synchronize across dimensions</div>
-                        </div>
-                      </div>
-                      <Switch checked={quantumSync} onCheckedChange={setQuantumSync} />
-                    </div>
-                  </div>
-
-                  <Separator />
-
-                  <div className="space-y-3">
-                    <Label>Notification Frequency</Label>
-                    <Select defaultValue="realtime">
-                      <SelectTrigger className="neumorphic-card border-0 bg-muted/20">
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent className="neumorphic-card border-0">
-                        <SelectItem value="realtime">Real-time (Quantum)</SelectItem>
-                        <SelectItem value="hourly">Every Hour</SelectItem>
-                        <SelectItem value="daily">Daily Summary</SelectItem>
-                        <SelectItem value="silent">Silent Mode</SelectItem>
-                      </SelectContent>
-                    </Select>
+                    <Switch checked={soundEnabled} onCheckedChange={setSoundEnabled} />
                   </div>
                 </CardContent>
               </Card>
             )}
-
             {/* Automation */}
             {activeSection === "automation" && (
               <Card className="neumorphic-card border-0 animate-slide-in-up">
@@ -281,71 +209,26 @@ export default function SettingsPage() {
                     <div className="p-2 rounded-lg bg-gradient-cyber/10">
                       <Bot className="h-5 w-5 text-cyber" />
                     </div>
-                    AI Neural Network
+                    Automation Settings
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-6">
-                  <div className="flex items-center justify-between p-4 neumorphic-card rounded-xl">
-                    <div className="flex items-center gap-3">
-                      <Bot className="h-5 w-5 text-cyber" />
-                      <div>
-                        <div className="font-medium">Neural Auto-Schedule</div>
-                        <div className="text-sm text-muted-foreground">AI predicts optimal send times</div>
-                      </div>
-                    </div>
+                  <div className="space-y-3">
+                    <Label>Auto-Schedule Messages</Label>
                     <Switch checked={autoSchedule} onCheckedChange={setAutoSchedule} />
                   </div>
-
-                  <div className="flex items-center justify-between p-4 neumorphic-card rounded-xl">
-                    <div className="flex items-center gap-3">
-                      <Sparkles className="h-5 w-5 text-pink" />
-                      <div>
-                        <div className="font-medium">Neural Enhancement Mode</div>
-                        <div className="text-sm text-muted-foreground">Advanced AI message optimization</div>
-                      </div>
-                    </div>
-                    <Switch checked={neuralMode} onCheckedChange={setNeuralMode} />
-                  </div>
-
-                  <div className="space-y-3">
-                    <Label>AI Intelligence Level</Label>
-                    <Select value={aiLevel} onValueChange={setAiLevel}>
-                      <SelectTrigger className="neumorphic-card border-0 bg-muted/20">
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent className="neumorphic-card border-0">
-                        <SelectItem value="basic">Basic Neural Network</SelectItem>
-                        <SelectItem value="advanced">Advanced AI Matrix</SelectItem>
-                        <SelectItem value="quantum">Quantum Intelligence</SelectItem>
-                        <SelectItem value="sentient">Sentient Mode (Beta)</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-
-                  {neuralMode && (
-                    <div className="p-4 rounded-xl bg-gradient-cyber/10 border border-cyber/20">
-                      <div className="flex items-center gap-2 mb-3">
-                        <Cpu className="h-5 w-5 text-cyber" />
-                        <span className="font-medium text-cyber">Neural Enhancement Active</span>
-                      </div>
-                      <div className="text-sm text-muted-foreground">
-                        Advanced AI algorithms are now analyzing your message patterns and optimizing delivery times across quantum dimensions.
-                      </div>
-                    </div>
-                  )}
                 </CardContent>
               </Card>
             )}
-
             {/* Appearance */}
             {activeSection === "appearance" && (
               <Card className="neumorphic-card border-0 animate-slide-in-up">
                 <CardHeader>
                   <CardTitle className="flex items-center gap-3">
                     <div className="p-2 rounded-lg bg-gradient-fusion/10">
-                      <Palette className="h-5 w-5 text-primary" />
+                      <Palette className="h-5 w-5 text-fusion" />
                     </div>
-                    Visual Interface Configuration
+                    Visual Interface Settings
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-6">
@@ -353,48 +236,15 @@ export default function SettingsPage() {
                     <div className="flex items-center gap-3">
                       {darkMode ? <Moon className="h-5 w-5 text-cyber" /> : <Sun className="h-5 w-5 text-warning" />}
                       <div>
-                        <div className="font-medium">Dark Matrix Mode</div>
-                        <div className="text-sm text-muted-foreground">Optimal for extended neural sessions</div>
+                        <div className="font-medium">Dark Mode</div>
+                        <div className="text-sm text-muted-foreground">Toggle light/dark theme</div>
                       </div>
                     </div>
                     <Switch checked={darkMode} onCheckedChange={setDarkMode} />
                   </div>
-
-                  <div className="space-y-3">
-                    <Label>Theme Gradient</Label>
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-                      {[
-                        { name: "Cyber Fusion", class: "bg-gradient-fusion" },
-                        { name: "Pink Wave", class: "bg-gradient-pink" },
-                        { name: "Quantum Blue", class: "bg-gradient-cyber" },
-                        { name: "Neural Purple", class: "bg-gradient-primary" }
-                      ].map((theme) => (
-                        <div key={theme.name} className="neumorphic-card rounded-xl p-4 cursor-pointer hover:scale-105 transition-all duration-300 group">
-                          <div className={cn("w-full h-16 rounded-lg mb-3", theme.class)}></div>
-                          <div className="text-sm font-medium text-center">{theme.name}</div>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-
-                  <div className="space-y-3">
-                    <Label>Animation Level</Label>
-                    <Select defaultValue="enhanced">
-                      <SelectTrigger className="neumorphic-card border-0 bg-muted/20">
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent className="neumorphic-card border-0">
-                        <SelectItem value="minimal">Minimal</SelectItem>
-                        <SelectItem value="standard">Standard</SelectItem>
-                        <SelectItem value="enhanced">Enhanced (Default)</SelectItem>
-                        <SelectItem value="maximum">Maximum Cyber</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
                 </CardContent>
               </Card>
             )}
-
             {/* Security */}
             {activeSection === "security" && (
               <Card className="neumorphic-card border-0 animate-slide-in-up">
@@ -403,7 +253,7 @@ export default function SettingsPage() {
                     <div className="p-2 rounded-lg bg-gradient-secondary/10">
                       <Shield className="h-5 w-5 text-secondary" />
                     </div>
-                    Cyber Security Matrix
+                    Security Settings
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-6">
@@ -414,40 +264,15 @@ export default function SettingsPage() {
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent className="neumorphic-card border-0">
-                        <SelectItem value="low">Standard Protection</SelectItem>
-                        <SelectItem value="medium">Enhanced Security</SelectItem>
-                        <SelectItem value="high">Maximum Encryption</SelectItem>
-                        <SelectItem value="quantum">Quantum Encryption</SelectItem>
+                        <SelectItem value="low">Low</SelectItem>
+                        <SelectItem value="medium">Medium</SelectItem>
+                        <SelectItem value="high">High</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
 
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div className="neumorphic-card rounded-xl p-4">
-                      <div className="flex items-center gap-3 mb-3">
-                        <Shield className="h-5 w-5 text-success" />
-                        <span className="font-medium">Firewall Status</span>
-                      </div>
-                      <div className="text-sm text-success">🟢 Active & Protected</div>
-                    </div>
-
-                    <div className="neumorphic-card rounded-xl p-4">
-                      <div className="flex items-center gap-3 mb-3">
-                        <Wifi className="h-5 w-5 text-cyber" />
-                        <span className="font-medium">Neural Encryption</span>
-                      </div>
-                      <div className="text-sm text-cyber">🔒 AES-256 Quantum</div>
-                    </div>
-                  </div>
-
-                  <div className="p-4 rounded-xl bg-success/10 border border-success/20">
-                    <div className="flex items-center gap-2 mb-2">
-                      <Shield className="h-5 w-5 text-success" />
-                      <span className="font-medium text-success">Security Status: Optimal</span>
-                    </div>
-                    <div className="text-sm text-muted-foreground">
-                      All neural pathways are secured with quantum-grade encryption. Your messages are protected across all dimensions.
-                    </div>
+                  <div className="text-sm text-muted-foreground">
+                    All messages are protected with AES-256 encryption.
                   </div>
                 </CardContent>
               </Card>
@@ -462,8 +287,7 @@ export default function SettingsPage() {
                 className="glow-neon shadow-2xl"
               >
                 <Zap className="h-5 w-5" />
-                Save Neural Configuration
-                <Sparkles className="h-4 w-4" />
+                Save Settings
               </Button>
             </div>
           </div>
