@@ -1,4 +1,5 @@
-const API_BASE = 'https://8762a25dd3d5.ngrok-free.app/api';
+const API_BASE = 'https://slack-connect-backend-g7wk.onrender.com/api';
+
 
 export interface Chanel {
   id: string;
