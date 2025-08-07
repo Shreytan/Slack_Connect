@@ -105,7 +105,7 @@ export default function Composer() {
                 Select Channel
               </Label>
               <Select value={selectedChannel} onValueChange={setSelectedChannel}>
-                <SelectTrigger className="neumorphic-card border-0 bg-muted/20">
+                <SelectTrigger className="border bg-muted/20 rounded-lg">
                   <SelectValue placeholder="Choose a channel..." />
                 </SelectTrigger>
                 <SelectContent className="neumorphic-card border-0">
@@ -187,7 +187,7 @@ export default function Composer() {
                     type="date"
                     value={scheduleDate}
                     onChange={(e) => setScheduleDate(e.target.value)}
-                    className="neumorphic-card border-0 bg-muted/20"
+                    className="border bg-muted/20 rounded-lg"
                   />
                 </div>
                 <div className="space-y-2">
@@ -199,7 +199,7 @@ export default function Composer() {
                     type="time"
                     value={scheduleTime}
                     onChange={(e) => setScheduleTime(e.target.value)}
-                    className="neumorphic-card border-0 bg-muted/20"
+                    className="border bg-muted/20 rounded-lg"
                   />
                 </div>
               </div>

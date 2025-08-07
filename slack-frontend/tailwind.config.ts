@@ -81,19 +81,10 @@ const tailwindConfig: Config = {
       backgroundImage: {
         "gradient-primary": "var(--gradient-primary)",
         "gradient-secondary": "var(--gradient-secondary)",
-        "gradient-pink": "var(--gradient-pink)",
-        "gradient-cyber": "var(--gradient-cyber)",
-        "gradient-fusion": "var(--gradient-fusion)",
-        "gradient-card": "var(--gradient-card)",
       },
 
       boxShadow: {
-        // Soft neumorphic shadows and inset shadows consistent with CSS variables
-        card: "0 0 15px hsl(220 13% 5% / 0.3), inset 0 1px 0 hsl(220 13% 20%), inset 0 -1px 0 hsl(220 13% 8%)",
-        glow: "0 0 12px hsl(320 85% 65% / 0.2)",
-        cyber: "0 0 18px hsl(245 58% 62% / 0.15)",
-        pink: "0 0 15px hsl(320 85% 65% / 0.25)",
-        neon: "0 0 22px hsl(320 85% 65% / 0.3), 0 0 40px hsl(320 85% 65% / 0.2)",
+        card: "0 4px 6px -1px rgba(0, 0, 0, 0.1)", // simplified card shadow
       },
 
       transitionTimingFunction: {
@@ -128,7 +119,6 @@ const tailwindConfig: Config = {
           from: { height: "var(--radix-accordion-content-height)" },
           to: { height: "0" },
         },
-        // Keep your existing keyframes, possibly declared in CSS
         "slide-in-up": {
           "0%": { opacity: "0", transform: "translateY(30px) scale(0.9)" },
           "100%": { opacity: "1", transform: "translateY(0) scale(1)" },

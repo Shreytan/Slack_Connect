@@ -160,14 +160,14 @@ export default function SettingsPage() {
                       <Label>User ID</Label>
                       <Input 
                         placeholder="Enter your user ID"
-                        className="neumorphic-card border-0 bg-muted/20"
+                        className="border bg-muted/20 rounded-lg"
                       />
                     </div>
                     <div className="space-y-2">
                       <Label>Workspace Name</Label>
                       <Input 
                         placeholder="Enter your workspace name"
-                        className="neumorphic-card border-0 bg-muted/20"
+                        className="border bg-muted/20 rounded-lg"
                       />
                     </div>
                   </div>
@@ -262,7 +262,7 @@ export default function SettingsPage() {
                   <div className="space-y-3">
                     <Label>Privacy Level</Label>
                     <Select value={privacy} onValueChange={setPrivacy}>
-                      <SelectTrigger className="neumorphic-card border-0 bg-muted/20">
+                      <SelectTrigger className="border bg-muted/20 rounded-lg">
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent className="neumorphic-card border-0">
