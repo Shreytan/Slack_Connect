@@ -75,13 +75,16 @@ router.get('/callback', async (req: Request, res: Response) => {
       console.log('✅ OAuth successful!');
       
       // Save user and tokens to database
-      const [user] = await User.upsert({
-        slackUserId: response.data.authed_user.id,
-        teamId: response.data.team.id,
-        accessToken: response.data.access_token,
-        teamName: response.data.team.name,
-        userName: response.data.authed_user.id
-      });
+     const [user] = await User.upsert({
+  slackUserId: response.data.authed_user.id,
+  teamId: response.data.team.id,
+  accessToken: response.data.access_token,
+  refreshToken: response.data.refresh_token,     // ADD THIS
+  tokenExpiresAt: new Date(Date.now() + (12 * 60 * 60 * 1000)), // ADD THIS (12 hours)
+  teamName: response.data.team.name,
+  userName: response.data.authed_user.id
+});
+
 
       console.log('💾 User saved to database:', user.id);
       

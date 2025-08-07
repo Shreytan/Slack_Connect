@@ -6,6 +6,9 @@ export class User extends Model {
   public slackUserId!: string;
   public teamId!: string;
   public accessToken!: string;
+  public refreshToken?: string;        // ADD THIS
+  public tokenExpiresAt?: Date;        // ADD THIS
+
   public teamName?: string;
   public userName?: string;
   
@@ -35,6 +38,17 @@ User.init({
     allowNull: false,
     field: 'access_token'
   },
+  refreshToken: {
+  type: DataTypes.TEXT,
+  allowNull: true,
+  field: 'refresh_token'
+},
+tokenExpiresAt: {
+  type: DataTypes.DATE,
+  allowNull: true,
+  field: 'token_expires_at'
+},
+
   teamName: {
     type: DataTypes.STRING,
     field: 'team_name'
