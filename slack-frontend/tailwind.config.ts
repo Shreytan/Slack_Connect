@@ -81,11 +81,19 @@ const tailwindConfig: Config = {
       backgroundImage: {
         "gradient-primary": "var(--gradient-primary)",
         "gradient-secondary": "var(--gradient-secondary)",
+        "gradient-pink": "var(--gradient-pink)",
+        "gradient-cyber": "var(--gradient-cyber)",
+        "gradient-fusion": "var(--gradient-fusion)",
+        "gradient-card": "var(--gradient-card)",
       },
 
       boxShadow: {
-        card: "0 0 10px rgba(100, 100, 255, 0.1)", // softer card shadow
-        inset: "inset 0 0 4px rgba(0, 0, 0, 0.1)", // subtle inset
+        // Soft neumorphic shadows and inset shadows consistent with CSS variables
+        card: "0 0 15px hsl(220 13% 5% / 0.3), inset 0 1px 0 hsl(220 13% 20%), inset 0 -1px 0 hsl(220 13% 8%)",
+        glow: "0 0 12px hsl(320 85% 65% / 0.2)",
+        cyber: "0 0 18px hsl(245 58% 62% / 0.15)",
+        pink: "0 0 15px hsl(320 85% 65% / 0.25)",
+        neon: "0 0 22px hsl(320 85% 65% / 0.3), 0 0 40px hsl(320 85% 65% / 0.2)",
       },
 
       transitionTimingFunction: {
@@ -99,7 +107,6 @@ const tailwindConfig: Config = {
         "slide-in-left": "slide-in-left 0.5s ease-out",
         "fade-in-scale": "fade-in-scale 0.4s ease-out",
         float: "float 6s ease-in-out infinite",
-        // Slowed and softened pulse glow for a calmer effect:
         "pulse-glow": "pulse-glow 3s ease-in-out infinite alternate",
 
         "accordion-down": "accordion-down 0.2s ease-out",
@@ -120,6 +127,27 @@ const tailwindConfig: Config = {
         "accordion-up": {
           from: { height: "var(--radix-accordion-content-height)" },
           to: { height: "0" },
+        },
+        // Keep your existing keyframes, possibly declared in CSS
+        "slide-in-up": {
+          "0%": { opacity: "0", transform: "translateY(30px) scale(0.9)" },
+          "100%": { opacity: "1", transform: "translateY(0) scale(1)" },
+        },
+        "slide-in-left": {
+          "0%": { opacity: "0", transform: "translateX(-30px)" },
+          "100%": { opacity: "1", transform: "translateX(0)" },
+        },
+        "fade-in-scale": {
+          "0%": { opacity: "0", transform: "scale(0.8)" },
+          "100%": { opacity: "1", transform: "scale(1)" },
+        },
+        float: {
+          "0%, 100%": { transform: "translateY(0px) rotate(0deg)" },
+          "50%": { transform: "translateY(-20px) rotate(180deg)" },
+        },
+        "pulse-glow": {
+          "0%": { "box-shadow": "0 0 15px hsl(320 85% 65% / 0.25)" },
+          "100%": { "box-shadow": "0 0 22px hsl(320 85% 65% / 0.3), 0 0 40px hsl(320 85% 65% / 0.2)" },
         },
       },
     },

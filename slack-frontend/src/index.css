@@ -1,10 +1,13 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+
 /* Slack Connect Design System - Dark Theme with Neumorphic Elements */
+
 
 /* ===============================
    Base variables with toned-down glow
@@ -43,6 +46,9 @@
     --cyber: 245 58% 62%;
     --cyber-foreground: 220 9% 98%;
     --cyber-glow: 245 58% 72%;
+
+    /* Fusion accent - combining pink, cyber, and purple shades */
+    --fusion: 270 91% 65%;
 
     /* Muted elements */
     --muted: 220 13% 16%;
@@ -93,6 +99,7 @@
   }
 }
 
+
 /* ===============================
    Global base styles
    =============================== */
@@ -125,6 +132,7 @@
   }
 }
 
+
 /* ===============================
    Component styles with softened glows
    =============================== */
@@ -135,6 +143,7 @@
     box-shadow: var(--shadow-card), var(--shadow-inset);
     transition: var(--transition-smooth);
     position: relative;
+    border-radius: var(--radius);
   }
 
   .neumorphic-card::before {
@@ -204,6 +213,7 @@
   }
 }
 
+
 /* ===============================
    Animations - slowed and softened
    =============================== */
@@ -249,6 +259,7 @@
     transform: scale(1);
   }
 }
+
 
 /* ===============================
    Re-apply border to all elements & base body styles again as fallback

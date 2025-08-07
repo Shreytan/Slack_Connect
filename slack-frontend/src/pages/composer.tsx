@@ -1,13 +1,13 @@
 import { useState } from "react";
 import { Navigation } from "@/components/layout/navigation";
-import { Button } from "@/components/ui/enhanced-button";
+import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
 import { Input } from "@/components/ui/input";
-import { Calendar, CalendarIcon, MessageSquare, Send, Clock } from "lucide-react";
+import { Calendar, MessageSquare, Send, Clock } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
 interface Channel {
@@ -15,7 +15,6 @@ interface Channel {
   name: string;
   members: number;
 }
-
 
 export default function Composer() {
   const [message, setMessage] = useState("");
@@ -26,16 +25,15 @@ export default function Composer() {
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
 
-// TODO: Fetch channels from backend
-const [channels, setChannels] = useState<Channel[]>([]);
-
+  // TODO: Fetch channels from backend
+  const [channels, setChannels] = useState<Channel[]>([]);
 
   const handleSendMessage = async () => {
     if (!message.trim() || !selectedChannel) {
       toast({
         title: "Missing Information",
         description: "Please select a channel and enter a message.",
-        variant: "destructive"
+        variant: "destructive",
       });
       return;
     }
@@ -44,28 +42,27 @@ const [channels, setChannels] = useState<Channel[]>([]);
       toast({
         title: "Missing Schedule",
         description: "Please select a date and time for your scheduled message.",
-        variant: "destructive"
+        variant: "destructive",
       });
       return;
     }
 
     setIsLoading(true);
-    
+
     // Simulate API call
     // TODO: call POST /api/messages/send or /api/messages/schedule
 
-    
     setIsLoading(false);
 
     if (isScheduled) {
       toast({
         title: "Message Scheduled!",
-        description: `Your message will be sent to ${selectedChannel} on ${scheduleDate} at ${scheduleTime}.`
+        description: `Your message will be sent to ${selectedChannel} on ${scheduleDate} at ${scheduleTime}.`,
       });
     } else {
       toast({
         title: "Message Sent!",
-        description: `Your message has been sent to ${selectedChannel}.`
+        description: `Your message has been sent to ${selectedChannel}.`,
       });
     }
 
@@ -83,16 +80,12 @@ const [channels, setChannels] = useState<Channel[]>([]);
   return (
     <div className="min-h-screen bg-background">
       <Navigation />
-      
+
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Header */}
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-foreground mb-2">
-            Message Composer
-          </h1>
-          <p className="text-muted-foreground text-lg">
-            Create and schedule messages for your Slack channels.
-          </p>
+          <h1 className="text-3xl font-bold text-foreground mb-2">Message Composer</h1>
+          <p className="text-muted-foreground text-lg">Create and schedule messages for your Slack channels.</p>
         </div>
 
         <Card className="neumorphic-card border-0">
@@ -104,7 +97,7 @@ const [channels, setChannels] = useState<Channel[]>([]);
               New Message
             </CardTitle>
           </CardHeader>
-          
+
           <CardContent className="space-y-6">
             {/* Channel Selection */}
             <div className="space-y-2">
@@ -116,16 +109,24 @@ const [channels, setChannels] = useState<Channel[]>([]);
                   <SelectValue placeholder="Choose a channel..." />
                 </SelectTrigger>
                 <SelectContent className="neumorphic-card border-0">
-                  {channels.map((channel) => (
-                    <SelectItem key={channel.id} value={channel.name}>
-                      <div className="flex items-center justify-between w-full">
-                        <span>{channel.name}</span>
-                        <span className="text-xs text-muted-foreground ml-2">
-                          {channel.members} members
-                        </span>
-                      </div>
-                    </SelectItem>
-                  ))}
+                  {channels.length === 0 ? (
+                    <div
+                      className="p-4 text-sm text-muted-foreground select-none cursor-default"
+                      aria-disabled="true"
+                      tabIndex={-1}
+                    >
+                      No channels available. Please connect your workspace.
+                    </div>
+                  ) : (
+                    channels.map((channel) => (
+                      <SelectItem key={channel.id} value={channel.id}>
+                        <div className="flex items-center justify-between w-full">
+                          <span>{channel.name}</span>
+                          <span className="text-xs text-muted-foreground ml-2">{channel.members} members</span>
+                        </div>
+                      </SelectItem>
+                    ))
+                  )}
                 </SelectContent>
               </Select>
             </div>
@@ -136,9 +137,11 @@ const [channels, setChannels] = useState<Channel[]>([]);
                 <Label htmlFor="message" className="text-sm font-medium">
                   Message
                 </Label>
-                <span className={`text-xs ${
-                  characterCount > characterLimit ? 'text-destructive' : 'text-muted-foreground'
-                }`}>
+                <span
+                  className={`text-xs ${
+                    characterCount > characterLimit ? "text-destructive" : "text-muted-foreground"
+                  }`}
+                >
                   {characterCount}/{characterLimit}
                 </span>
               </div>
@@ -154,11 +157,7 @@ const [channels, setChannels] = useState<Channel[]>([]);
 
             {/* Schedule Toggle */}
             <div className="flex items-center space-x-3 p-4 rounded-xl bg-muted/20">
-              <Switch
-                id="schedule"
-                checked={isScheduled}
-                onCheckedChange={setIsScheduled}
-              />
+              <Switch id="schedule" checked={isScheduled} onCheckedChange={setIsScheduled} />
               <div className="flex-1">
                 <Label htmlFor="schedule" className="text-sm font-medium cursor-pointer">
                   Schedule for Later
@@ -210,7 +209,7 @@ const [channels, setChannels] = useState<Channel[]>([]);
             <div className="pt-4">
               <Button
                 onClick={handleSendMessage}
-                loading={isLoading}
+                loading={isLoading ? true : undefined}
                 className="w-full glow-primary h-12"
                 disabled={!message.trim() || !selectedChannel || characterCount > characterLimit}
               >

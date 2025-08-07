@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Navigation } from "@/components/layout/navigation";
-import { Button } from "@/components/ui/enhanced-button";
+import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
@@ -53,32 +53,32 @@ export default function SettingsPage() {
       id: "profile",
       title: "Profile",
       icon: User,
-      gradient: "gradient-primary"
+      gradient: "gradient-primary",
     },
     {
       id: "notifications", 
       title: "Notifications",
       icon: Bell,
-      gradient: "gradient-pink"
+      gradient: "gradient-primary",  // updated from gradient-pink
     },
     {
       id: "automation",
       title: "Automation",
       icon: Bot,
-      gradient: "gradient-cyber"
+      gradient: "gradient-secondary", // updated from gradient-cyber
     },
     {
       id: "appearance",
       title: "Visual Interface",
       icon: Palette,
-      gradient: "gradient-fusion"
+      gradient: "gradient-primary",   // updated from gradient-fusion
     },
     {
       id: "security",
       title: "Security",
       icon: Shield,
-      gradient: "gradient-secondary"
-    }
+      gradient: "gradient-secondary",
+    },
   ];
 
   const [activeSection, setActiveSection] = useState("profile");
@@ -121,12 +121,14 @@ export default function SettingsPage() {
                       activeSection === section.id && "glow-neon shadow-neon"
                     )}
                   >
-                    <div className={cn(
-                      "p-2 rounded-lg",
-                      activeSection === section.id 
-                        ? "bg-white/20" 
-                        : `bg-${section.gradient}/10`
-                    )}>
+                    <div
+                      className={cn(
+                        "p-2 rounded-lg",
+                        activeSection === section.id 
+                          ? "bg-white/20" 
+                          : `bg-${section.gradient}/10`
+                      )}
+                    >
                       <section.icon className="h-4 w-4" />
                     </div>
                     <div>
@@ -185,8 +187,8 @@ export default function SettingsPage() {
               <Card className="neumorphic-card border-0 animate-slide-in-up">
                 <CardHeader>
                   <CardTitle className="flex items-center gap-3">
-                    <div className="p-2 rounded-lg bg-gradient-pink/10">
-                      <Bell className="h-5 w-5 text-pink" />
+                    <div className="p-2 rounded-lg bg-gradient-primary/10">
+                      <Bell className="h-5 w-5 text-primary" />
                     </div>
                     Notification Settings
                   </CardTitle>
@@ -206,8 +208,8 @@ export default function SettingsPage() {
               <Card className="neumorphic-card border-0 animate-slide-in-up">
                 <CardHeader>
                   <CardTitle className="flex items-center gap-3">
-                    <div className="p-2 rounded-lg bg-gradient-cyber/10">
-                      <Bot className="h-5 w-5 text-cyber" />
+                    <div className="p-2 rounded-lg bg-gradient-secondary/10">
+                      <Bot className="h-5 w-5 text-secondary" />
                     </div>
                     Automation Settings
                   </CardTitle>
@@ -225,8 +227,8 @@ export default function SettingsPage() {
               <Card className="neumorphic-card border-0 animate-slide-in-up">
                 <CardHeader>
                   <CardTitle className="flex items-center gap-3">
-                    <div className="p-2 rounded-lg bg-gradient-fusion/10">
-                      <Palette className="h-5 w-5 text-fusion" />
+                    <div className="p-2 rounded-lg bg-gradient-primary/10">
+                      <Palette className="h-5 w-5 text-primary" />
                     </div>
                     Visual Interface Settings
                   </CardTitle>
@@ -234,7 +236,7 @@ export default function SettingsPage() {
                 <CardContent className="space-y-6">
                   <div className="flex items-center justify-between p-4 neumorphic-card rounded-xl">
                     <div className="flex items-center gap-3">
-                      {darkMode ? <Moon className="h-5 w-5 text-cyber" /> : <Sun className="h-5 w-5 text-warning" />}
+                      {darkMode ? <Moon className="h-5 w-5 text-secondary" /> : <Sun className="h-5 w-5 text-warning" />}
                       <div>
                         <div className="font-medium">Dark Mode</div>
                         <div className="text-sm text-muted-foreground">Toggle light/dark theme</div>

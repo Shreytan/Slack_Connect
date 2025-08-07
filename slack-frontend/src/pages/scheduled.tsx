@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Navigation } from "@/components/layout/navigation";
-import { Button } from "@/components/ui/enhanced-button";
+import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
@@ -66,8 +66,9 @@ export default function Scheduled() {
   };
 
   const filteredMessages = messages.filter(message => {
-    const matchesSearch = message.message.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                         message.channel.toLowerCase().includes(searchQuery.toLowerCase());
+    const matchesSearch =
+      message.message.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      message.channel.toLowerCase().includes(searchQuery.toLowerCase());
     const matchesStatus = statusFilter === "all" || message.status === statusFilter;
     return matchesSearch && matchesStatus;
   });
@@ -225,14 +226,8 @@ export default function Scheduled() {
           <CardContent>
             <div className="space-y-4">
               {filteredMessages.length === 0 ? (
-                <div className="text-center py-12">
-                  <div className="text-muted-foreground mb-4">
-                    <MessageSquare className="h-12 w-12 mx-auto mb-4 opacity-50" />
-                    No messages found matching your filters.
-                  </div>
-                  <Button variant="outline">
-                    Clear Filters
-                  </Button>
+                <div className="p-4 text-center text-muted-foreground">
+                  No scheduled messages found.
                 </div>
               ) : (
                 filteredMessages.map((message, index) => (
