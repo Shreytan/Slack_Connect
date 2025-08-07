@@ -12,7 +12,8 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "dependencies": {
+
+   "dependencies": {
     "@slack/web-api": "^7.9.3",
     "axios": "^1.11.0",
     "cors": "^2.8.5",
@@ -20,14 +21,15 @@
     "express": "^5.1.0",
     "node-cron": "^4.2.1",
     "sequelize": "^6.37.7",
-    "sqlite3": "^5.1.7"
+    "pg": "^8.12.0",
+    "pg-hstore": "^2.3.4"
   },
   "devDependencies": {
     "@types/cors": "^2.8.19",
     "@types/express": "^5.0.3",
     "@types/node": "^24.2.0",
     "@types/node-cron": "^3.0.11",
-    "@types/sequelize": "^6.12.0",
+    "@types/pg": "^8.11.6",
     "nodemon": "^3.1.10",
     "ts-node": "^10.9.2",
     "typescript": "^5.9.2"

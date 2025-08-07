@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Navigation } from "@/components/layout/navigation";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -9,12 +9,7 @@ import { Switch } from "@/components/ui/switch";
 import { Input } from "@/components/ui/input";
 import { Calendar, MessageSquare, Send, Clock } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
-
-interface Channel {
-  id: string;
-  name: string;
-  members: number;
-}
+import { apiService, Chanel } from "@/services/api";
 
 export default function Composer() {
   const [message, setMessage] = useState("");
@@ -23,10 +18,33 @@ export default function Composer() {
   const [scheduleDate, setScheduleDate] = useState("");
   const [scheduleTime, setScheduleTime] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [channels, setChannels] = useState<Chanel[]>([]);
+  const [loadingChannels, setLoadingChannels] = useState(true);
   const { toast } = useToast();
 
-  // TODO: Fetch channels from backend
-  const [channels, setChannels] = useState<Channel[]>([]);
+  // Load channels on component mount
+  useEffect(() => {
+    const loadChannels = async () => {
+      try {
+        setLoadingChannels(true);
+        const userId = "U0995J12K46"; // Your actual user ID
+        const channelList = await apiService.getChannels(userId);
+        setChannels(channelList);
+        console.log('Loaded channels:', channelList);
+      } catch (error) {
+        console.error('Failed to load channels:', error);
+        toast({
+          title: "Error",
+          description: "Failed to load channels. Please check your connection.",
+          variant: "destructive",
+        });
+      } finally {
+        setLoadingChannels(false);
+      }
+    };
+
+    loadChannels();
+  }, [toast]);
 
   const handleSendMessage = async () => {
     if (!message.trim() || !selectedChannel) {
@@ -49,29 +67,54 @@ export default function Composer() {
 
     setIsLoading(true);
 
-    // Simulate API call
-    // TODO: call POST /api/messages/send or /api/messages/schedule
+    try {
+      const userId = "U0995J12K46"; // Your actual user ID
 
-    setIsLoading(false);
+      if (isScheduled) {
+        // Create date in local timezone, then convert to UTC for backend
+    const localDateTime = new Date(`${scheduleDate}T${scheduleTime}`);
+    const scheduledTime = localDateTime.toISOString();
+        const result = await apiService.scheduleMessage(userId, selectedChannel, message, scheduledTime);
+        
+        if (result.success) {
+          toast({
+            title: "Message Scheduled!",
+            description: `Your message will be sent on ${scheduleDate} at ${scheduleTime}.`,
+          });
+        } else {
+          throw new Error(result.error || 'Failed to schedule message');
+        }
+      } else {
+        const result = await apiService.sendMessage(userId, selectedChannel, message);
+        
+        if (result.success) {
+          const channelName = channels.find(c => c.id === selectedChannel)?.name || selectedChannel;
+          toast({
+            title: "Message Sent!",
+            description: `Your message has been sent to #${channelName}.`,
+          });
+        } else {
+          throw new Error(result.error || 'Failed to send message');
+        }
+      }
 
-    if (isScheduled) {
+      // Reset form on success
+      setMessage("");
+      setSelectedChannel("");
+      setScheduleDate("");
+      setScheduleTime("");
+      setIsScheduled(false);
+
+    } catch (error: any) {
+      console.error('Error sending/scheduling message:', error);
       toast({
-        title: "Message Scheduled!",
-        description: `Your message will be sent to ${selectedChannel} on ${scheduleDate} at ${scheduleTime}.`,
-      });
-    } else {
-      toast({
-        title: "Message Sent!",
-        description: `Your message has been sent to ${selectedChannel}.`,
+        title: "Error",
+        description: error.message || "Failed to send message. Please try again.",
+        variant: "destructive",
       });
     }
 
-    // Reset form
-    setMessage("");
-    setSelectedChannel("");
-    setScheduleDate("");
-    setScheduleTime("");
-    setIsScheduled(false);
+    setIsLoading(false);
   };
 
   const characterCount = message.length;
@@ -109,20 +152,25 @@ export default function Composer() {
                   <SelectValue placeholder="Choose a channel..." />
                 </SelectTrigger>
                 <SelectContent className="neumorphic-card border-0">
-                  {channels.length === 0 ? (
-                    <div
-                      className="p-4 text-sm text-muted-foreground select-none cursor-default"
-                      aria-disabled="true"
-                      tabIndex={-1}
-                    >
+                  {loadingChannels ? (
+                    <div className="p-4 text-sm text-muted-foreground text-center">
+                      Loading channels...
+                    </div>
+                  ) : channels.length === 0 ? (
+                    <div className="p-4 text-sm text-muted-foreground text-center">
                       No channels available. Please connect your workspace.
                     </div>
                   ) : (
                     channels.map((channel) => (
                       <SelectItem key={channel.id} value={channel.id}>
-                        <div className="flex items-center justify-between w-full">
-                          <span>{channel.name}</span>
-                          <span className="text-xs text-muted-foreground ml-2">{channel.members} members</span>
+                        <div className="flex items-center gap-2">
+                          <span className="text-sm">#</span>
+                          <div>
+                            <div className="font-medium">{channel.name}</div>
+                            <div className="text-xs text-muted-foreground">
+                              {channel.isPrivate ? 'Private channel' : 'Public channel'}
+                            </div>
+                          </div>
                         </div>
                       </SelectItem>
                     ))
@@ -209,18 +257,19 @@ export default function Composer() {
             <div className="pt-4">
               <Button
                 onClick={handleSendMessage}
-                loading={isLoading ? true : undefined}
                 className="w-full glow-primary h-12"
-                disabled={!message.trim() || !selectedChannel || characterCount > characterLimit}
+                disabled={!message.trim() || !selectedChannel || characterCount > characterLimit || isLoading || loadingChannels}
               >
-                {isScheduled ? (
+                {isLoading ? (
+                  "Processing..."
+                ) : isScheduled ? (
                   <>
-                    <Clock className="h-4 w-4" />
+                    <Clock className="h-4 w-4 mr-2" />
                     Schedule Message
                   </>
                 ) : (
                   <>
-                    <Send className="h-4 w-4" />
+                    <Send className="h-4 w-4 mr-2" />
                     Send Message
                   </>
                 )}
