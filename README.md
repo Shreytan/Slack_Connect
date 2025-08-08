@@ -418,5 +418,3 @@ Netlify → Render.com → Slack API
 **🌐 Live Demo:** https://cobalt-slack-assessment.netlify.app/  
 **🔗 Backend API:** https://slack-connect-backend-g7wk.onrender.com/  
 **📂 Repository:** https://github.com/Shreytan/Slack_Connect
-
-[1] https://img.shields.io/badge/Live%20Demo-Netlify
