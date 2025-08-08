@@ -7,9 +7,10 @@ import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
 import { Input } from "@/components/ui/input";
-import { Calendar, MessageSquare, Send, Clock } from "lucide-react";
+import { Calendar, MessageSquare, Send, Clock, Zap, Hash } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { apiService, Chanel } from "@/services/api";
+
 
 export default function Composer() {
   const [message, setMessage] = useState("");
@@ -22,15 +23,17 @@ export default function Composer() {
   const [loadingChannels, setLoadingChannels] = useState(true);
   const { toast } = useToast();
 
-  // Load channels on component mount
+
   useEffect(() => {
     const loadChannels = async () => {
       try {
         setLoadingChannels(true);
-        const userId = "U0995J12K46"; // Your actual user ID
+        const userId = "U0995J12K46";
         const channelList = await apiService.getChannels(userId);
-        setChannels(channelList);
-        console.log('Loaded channels:', channelList);
+        const filteredChannels = channelList.filter(channel => 
+          channel.name !== "social" && channel.name !== "new-channel"
+        );
+        setChannels(filteredChannels);
       } catch (error) {
         console.error('Failed to load channels:', error);
         toast({
@@ -42,9 +45,9 @@ export default function Composer() {
         setLoadingChannels(false);
       }
     };
-
     loadChannels();
   }, [toast]);
+
 
   const handleSendMessage = async () => {
     if (!message.trim() || !selectedChannel) {
@@ -56,6 +59,7 @@ export default function Composer() {
       return;
     }
 
+
     if (isScheduled && (!scheduleDate || !scheduleTime)) {
       toast({
         title: "Missing Schedule",
@@ -65,20 +69,22 @@ export default function Composer() {
       return;
     }
 
+
     setIsLoading(true);
 
+
     try {
-      const userId = "U0995J12K46"; // Your actual user ID
+      const userId = "U0995J12K46";
+
 
       if (isScheduled) {
-        // Create date in local timezone, then convert to UTC for backend
-    const localDateTime = new Date(`${scheduleDate}T${scheduleTime}`);
-    const scheduledTime = localDateTime.toISOString();
+        const localDateTime = new Date(`${scheduleDate}T${scheduleTime}`);
+        const scheduledTime = localDateTime.toISOString();
         const result = await apiService.scheduleMessage(userId, selectedChannel, message, scheduledTime);
         
         if (result.success) {
           toast({
-            title: "Message Scheduled!",
+            title: "✨ Message Scheduled!",
             description: `Your message will be sent on ${scheduleDate} at ${scheduleTime}.`,
           });
         } else {
@@ -90,7 +96,7 @@ export default function Composer() {
         if (result.success) {
           const channelName = channels.find(c => c.id === selectedChannel)?.name || selectedChannel;
           toast({
-            title: "Message Sent!",
+            title: "🚀 Message Sent!",
             description: `Your message has been sent to #${channelName}.`,
           });
         } else {
@@ -98,12 +104,14 @@ export default function Composer() {
         }
       }
 
-      // Reset form on success
+
+      // Reset form
       setMessage("");
       setSelectedChannel("");
       setScheduleDate("");
       setScheduleTime("");
       setIsScheduled(false);
+
 
     } catch (error: any) {
       console.error('Error sending/scheduling message:', error);
@@ -114,169 +122,183 @@ export default function Composer() {
       });
     }
 
+
     setIsLoading(false);
   };
 
+
   const characterCount = message.length;
-  const characterLimit = 200;
+  const characterLimit = 4000;
+
 
   return (
     <div className="min-h-screen bg-background">
       <Navigation />
-
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Header */}
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-foreground mb-2">Message Composer</h1>
-          <p className="text-muted-foreground text-lg">Create and schedule messages for your Slack channels.</p>
-        </div>
-
-        <Card className="neumorphic-card border-0">
-          <CardHeader>
-            <CardTitle className="flex items-center gap-3">
-              <div className="p-2 rounded-xl bg-gradient-primary/10">
-                <MessageSquare className="h-5 w-5 text-primary" />
+      
+      <div className="lg:pl-64">
+        <div className="px-6 py-8 animate-slide-in-up">
+          {/* Enhanced Header */}
+          <div className="mb-8">
+            <div className="flex items-center gap-4 mb-4">
+              <div className="p-3 glass-card rounded-xl">
+                <MessageSquare className="h-8 w-8 text-primary animate-pulse-glow" />
               </div>
-              New Message
-            </CardTitle>
-          </CardHeader>
-
-          <CardContent className="space-y-6">
-            {/* Channel Selection */}
-            <div className="space-y-2">
-              <Label htmlFor="channel" className="text-sm font-medium">
-                Select Channel
-              </Label>
-              <Select value={selectedChannel} onValueChange={setSelectedChannel}>
-                <SelectTrigger className="border bg-muted/20 rounded-lg">
-                  <SelectValue placeholder="Choose a channel..." />
-                </SelectTrigger>
-                <SelectContent className="neumorphic-card border-0">
-                  {loadingChannels ? (
-                    <div className="p-4 text-sm text-muted-foreground text-center">
-                      Loading channels...
-                    </div>
-                  ) : channels.length === 0 ? (
-                    <div className="p-4 text-sm text-muted-foreground text-center">
-                      No channels available. Please connect your workspace.
-                    </div>
-                  ) : (
-                    channels.map((channel) => (
-                      <SelectItem key={channel.id} value={channel.id}>
-                        <div className="flex items-center gap-2">
-                          <span className="text-sm">#</span>
-                          <div>
-                            <div className="font-medium">{channel.name}</div>
-                            <div className="text-xs text-muted-foreground">
-                              {channel.isPrivate ? 'Private channel' : 'Public channel'}
-                            </div>
-                          </div>
-                        </div>
-                      </SelectItem>
-                    ))
-                  )}
-                </SelectContent>
-              </Select>
-            </div>
-
-            {/* Message Input */}
-            <div className="space-y-2">
-              <div className="flex items-center justify-between">
-                <Label htmlFor="message" className="text-sm font-medium">
-                  Message
-                </Label>
-                <span
-                  className={`text-xs ${
-                    characterCount > characterLimit ? "text-destructive" : "text-muted-foreground"
-                  }`}
-                >
-                  {characterCount}/{characterLimit}
-                </span>
-              </div>
-              <Textarea
-                id="message"
-                placeholder="Type your message here..."
-                value={message}
-                onChange={(e) => setMessage(e.target.value)}
-                className="min-h-[120px] neumorphic-card border-0 bg-muted/20 resize-none"
-                maxLength={characterLimit}
-              />
-            </div>
-
-            {/* Schedule Toggle */}
-            <div className="flex items-center space-x-3 p-4 rounded-xl bg-muted/20">
-              <Switch id="schedule" checked={isScheduled} onCheckedChange={setIsScheduled} />
-              <div className="flex-1">
-                <Label htmlFor="schedule" className="text-sm font-medium cursor-pointer">
-                  Schedule for Later
-                </Label>
-                <p className="text-xs text-muted-foreground">
-                  {isScheduled ? "Message will be sent at the specified time" : "Send message immediately"}
+              <div>
+                <h1 className="text-fluid-2xl font-bold gradient-text">
+                  Message Composer
+                </h1>
+                <p className="text-muted-foreground text-fluid-base">
+                  Create and schedule messages for your Slack channels
                 </p>
               </div>
-              <div className="p-2 rounded-lg bg-gradient-accent/10">
-                {isScheduled ? (
-                  <Calendar className="h-4 w-4 text-accent" />
-                ) : (
-                  <Send className="h-4 w-4 text-muted-foreground" />
+            </div>
+          </div>
+
+
+          {/* Enhanced Composer Card */}
+          <Card className="glass-card border-0 max-w-4xl animate-fade-in-scale">
+            <CardHeader className="pb-6">
+              <div className="flex items-center gap-3">
+                <div className="p-2 bg-primary/10 rounded-lg">
+                  <Zap className="h-5 w-5 text-primary" />
+                </div>
+                <CardTitle className="text-fluid-lg">New Message</CardTitle>
+              </div>
+            </CardHeader>
+
+
+            <CardContent className="space-y-8">
+              {/* Channel Selection */}
+              <div className="space-y-3">
+                <Label className="text-base font-semibold flex items-center gap-2">
+                  <Hash className="h-4 w-4" />
+                  Select Channel
+                </Label>
+                <Select value={selectedChannel} onValueChange={setSelectedChannel}>
+                  <SelectTrigger className="glass-card border-0 bg-muted/10 h-14">
+                    <SelectValue placeholder="Choose a channel..." />
+                  </SelectTrigger>
+                  <SelectContent className="glass-card border border-border/50">
+                    {loadingChannels ? (
+                      <SelectItem value="loading" disabled>
+                        <div className="flex items-center gap-2">
+                          <div className="animate-spin rounded-full h-4 w-4 border-2 border-primary border-t-transparent" />
+                          Loading channels...
+                        </div>
+                      </SelectItem>
+                    ) : channels.length === 0 ? (
+                      <SelectItem value="no-channels" disabled>
+                        No channels available
+                      </SelectItem>
+                    ) : (
+                      channels.map((channel) => (
+                        <SelectItem key={channel.id} value={channel.id}>
+                          <div className="flex items-center gap-3">
+                            <Hash className="h-4 w-4 text-muted-foreground" />
+                            <div>
+                              <div className="font-medium">{channel.name}</div>
+                              <div className="text-xs text-muted-foreground">
+                                {channel.isPrivate ? 'Private channel' : 'Public channel'}
+                              </div>
+                            </div>
+                          </div>
+                        </SelectItem>
+                      ))
+                    )}
+                  </SelectContent>
+                </Select>
+              </div>
+
+
+              {/* Message Input */}
+              <div className="space-y-3">
+                <div className="flex items-center justify-between">
+                  <Label className="text-base font-semibold">Message</Label>
+                  <div className={`text-sm ${
+                    characterCount > characterLimit ? "text-destructive" : "text-muted-foreground"
+                  }`}>
+                    {characterCount.toLocaleString()}/{characterLimit.toLocaleString()}
+                  </div>
+                </div>
+                <Textarea
+                  placeholder="Type your message here..."
+                  value={message}
+                  onChange={(e) => setMessage(e.target.value)}
+                  className="glass-card border-0 bg-muted/10 min-h-[150px] resize-none text-base"
+                  maxLength={characterLimit}
+                />
+              </div>
+
+
+              {/* Schedule Toggle */}
+              <div className="glass-card p-6 rounded-xl space-y-4">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <Clock className="h-5 w-5 text-primary" />
+                    <div>
+                      <Label className="text-base font-semibold">Schedule for Later</Label>
+                      <p className="text-sm text-muted-foreground">
+                        {isScheduled ? "Message will be sent at the specified time" : "Send message immediately"}
+                      </p>
+                    </div>
+                  </div>
+                  <Switch
+                    checked={isScheduled}
+                    onCheckedChange={setIsScheduled}
+                    className="data-[state=checked]:bg-primary"
+                  />
+                </div>
+
+
+                {/* Schedule Inputs */}
+                {isScheduled && (
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-4 border-t border-border/50 animate-slide-in-up">
+                    <div className="space-y-2">
+                      <Label>Date</Label>
+                      <Input
+                        type="date"
+                        value={scheduleDate}
+                        onChange={(e) => setScheduleDate(e.target.value)}
+                        className="glass-card border-0 bg-muted/10"
+                        min={new Date().toISOString().split('T')[0]}
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label>Time</Label>
+                      <Input
+                        type="time"
+                        value={scheduleTime}
+                        onChange={(e) => setScheduleTime(e.target.value)}
+                        className="glass-card border-0 bg-muted/10"
+                      />
+                    </div>
+                  </div>
                 )}
               </div>
-            </div>
 
-            {/* Schedule Inputs */}
-            {isScheduled && (
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 p-4 rounded-xl bg-accent/5 border border-accent/20">
-                <div className="space-y-2">
-                  <Label htmlFor="date" className="text-sm font-medium">
-                    Date
-                  </Label>
-                  <Input
-                    id="date"
-                    type="date"
-                    value={scheduleDate}
-                    onChange={(e) => setScheduleDate(e.target.value)}
-                    className="border bg-muted/20 rounded-lg"
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="time" className="text-sm font-medium">
-                    Time
-                  </Label>
-                  <Input
-                    id="time"
-                    type="time"
-                    value={scheduleTime}
-                    onChange={(e) => setScheduleTime(e.target.value)}
-                    className="border bg-muted/20 rounded-lg"
-                  />
-                </div>
-              </div>
-            )}
 
-            {/* Send Button */}
-            <div className="pt-4">
+              {/* Send Button */}
               <Button
                 onClick={handleSendMessage}
-                className="w-full glow-primary h-12"
-                disabled={!message.trim() || !selectedChannel || characterCount > characterLimit || isLoading || loadingChannels}
+                disabled={isLoading || !message.trim() || !selectedChannel}
+                className="btn-interactive w-full h-14 text-base font-semibold bg-primary hover:bg-primary/90"
+                size="lg"
               >
                 {isLoading ? (
-                  "Processing..."
-                ) : isScheduled ? (
-                  <>
-                    <Clock className="h-4 w-4 mr-2" />
-                    Schedule Message
-                  </>
+                  <div className="flex items-center gap-2">
+                    <div className="animate-spin rounded-full h-5 w-5 border-2 border-white border-t-transparent" />
+                    {isScheduled ? "Scheduling..." : "Sending..."}
+                  </div>
                 ) : (
-                  <>
-                    <Send className="h-4 w-4 mr-2" />
-                    Send Message
-                  </>
+                  <div className="flex items-center gap-2">
+                    <Send className="h-5 w-5" />
+                    {isScheduled ? "Schedule Message" : "Send Now"}
+                  </div>
                 )}
               </Button>
-            </div>
-          </CardContent>
-        </Card>
+            </CardContent>
+          </Card>
+        </div>
       </div>
     </div>
   );
