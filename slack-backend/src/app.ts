@@ -10,14 +10,17 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-// Middleware
+// CORS configuration
 app.use(cors({
   origin: [
-    'http://localhost:5173',  // Keep existing
-    'http://localhost:8080',  // ADD THIS LINE
+    'https://cobalt-slack-assessment.netlify.app', // Netlify production frontend
+    'http://localhost:5173',                      // Vite local frontend
+    'http://localhost:8080',                      // (optional: another local port)
     process.env.FRONTEND_URL || 'http://localhost:5173'
   ],
-  credentials: true
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
 }));
 
 app.use(express.json());
@@ -27,10 +30,27 @@ app.use(express.urlencoded({ extended: true }));
 const authRoutes = require('./routes/auth');
 const slackRoutes = require('./routes/slack');
 
+// *** Root Route Handler for health/status check ***
+app.get('/', (req, res) => {
+  res.json({
+    status: 'Slack Connect API Server Running',
+    version: '1.0.0',
+    timestamp: new Date().toISOString(),
+    endpoints: [
+      '/api/auth/connect',
+      '/api/auth/callback',
+      '/api/slack/channels/:userId',
+      '/api/slack/send-message',
+      '/api/slack/schedule-message'
+    ]
+  });
+});
+
+// Mount feature routes
 app.use('/api/auth', authRoutes);
 app.use('/api/slack', slackRoutes);
 
-// Basic test route
+// Diagnostic test route (optional but safe to leave)
 app.get('/api/test', (req, res) => {
   res.json({ 
     message: 'Backend is running!',
@@ -44,32 +64,27 @@ app.get('/api/test', (req, res) => {
 });
 
 // Start server with database connection
-// Start server with database connection
 const startServer = async () => {
   try {
     await connectDatabase();
-    
     // Import models after database connection
     await import('./models/User');
-    await import('./models/ScheduledMessage');  // ADDED THIS LINE
-    
+    await import('./models/ScheduledMessage');
     // Sync database (create tables)
     const { sequelize } = await import('./config/database');
     await sequelize.sync({ force: false });
     console.log('✅ Database tables synchronized');
     // Start the message scheduler
-SchedulingService.startScheduler();
+    SchedulingService.startScheduler();
 
-    
     app.listen(PORT, () => {
       console.log(`🚀 Server running on http://localhost:${PORT}`);
-      console.log(`🔗 ngrok URL: https://8762a25dd3d5.ngrok-free.app`);
+      // Remove hardcoded ngrok URL for production!
     });
   } catch (error) {
     console.error('Failed to start server:', error);
     process.exit(1);
   }
 };
-
 
 startServer();

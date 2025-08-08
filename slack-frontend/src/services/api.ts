@@ -22,8 +22,7 @@ export interface ScheduledMessage {
 
 // Common headers to bypass ngrok browser warning
 const getHeaders = () => ({
-  'Content-Type': 'application/json',
-  'ngrok-skip-browser-warning': 'true'  // ADD THIS HEADER
+  'Content-Type': 'application/json', // ADD THIS HEADER
 });
 
 class ApiService {
