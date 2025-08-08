@@ -1,6 +1,6 @@
 # 🚀 Slack Connect – Advanced Message Scheduling Platform
 
-[![Live Demo](https://img.shields.io/badge/Live%20Demo-Netlify-00C7B7?style=for-the-badge&logo-slack-assessment.netlify://img.shields.io/badge/GitHub-Repository-181717?style=for-the-badge&logo=github API](https://img.shields.io/badge/Backend%20API-Render-46E3B7?style=for-the-badgeack-connect-backend-g7wk.on Table of Contents
+Table of Contents
 
 - [🎯 Project Overview](#-project-overview)  
 - [✨ Key Features](#-key-features)  
